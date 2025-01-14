@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-//Automatic instance, spring boot will find the definition of repository
 
 @Service
 public class UserService {
