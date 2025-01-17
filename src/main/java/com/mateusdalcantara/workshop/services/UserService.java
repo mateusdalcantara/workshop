@@ -1,6 +1,7 @@
 package com.mateusdalcantara.workshop.services;
 
 import com.mateusdalcantara.workshop.domain.User;
+import com.mateusdalcantara.workshop.dto.UserDTO;
 import com.mateusdalcantara.workshop.repository.UserRepository;
 import com.mateusdalcantara.workshop.services.exception.DataBaseException;
 import com.mateusdalcantara.workshop.services.exception.ObjectNotFoundException;
@@ -23,20 +24,18 @@ public class UserService {
     }
 
     public User findById(String id) {
-        return repo.findById(id)  // Assuming repo returns an Optional<User>
+        return repo.findById(id) 
                 .orElseThrow(() -> new ObjectNotFoundException("Object not found."));
     }
 
-    public void delete(Long id) {
-        try {
-            repo.deleteById(String.valueOf(id));
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException(e.getMessage());
-        }
-
+    public User insert(User obj) {
+        return repo.save(obj);
     }
+
+    public User fromDTO(UserDTO objDto){
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
+
 }
 
 
