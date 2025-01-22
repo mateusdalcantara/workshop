@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public User findById(String id) {
-        return repo.findById(id) 
+        return repo.findById(String.valueOf((id)))
                 .orElseThrow(() -> new ObjectNotFoundException("Object not found."));
     }
 
@@ -32,10 +32,17 @@ public class UserService {
         return repo.save(obj);
     }
 
-    public User fromDTO(UserDTO objDto){
-        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    public void delete(String id) {
+        try {
+            repo.deleteById(String.valueOf(id));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
+    public User fromDTO(UserDTO objDto) {
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
 }
 
 
