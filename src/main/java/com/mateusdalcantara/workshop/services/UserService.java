@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -40,8 +41,21 @@ public class UserService {
         }
     }
 
+    public User update(String id, User obj) {
+        Optional<User> entityOptional = repo.findById(id); // Correção aqui
+        User entity = entityOptional.get(); // Obtém a entidade User
+        updateData(entity, obj); // Atualiza os dados da entidade
+        return repo.save(entity); // Salva a entidade atualizada e retorna
+
+    }
+    private void updateData(User entity, User obj) {
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
+        entity.setPhone(obj.getPhone());
+    }
+
     public User fromDTO(UserDTO objDto) {
-        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail(), objDto.getPhone());
     }
 }
 
